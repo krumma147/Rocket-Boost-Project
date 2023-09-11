@@ -46,7 +46,7 @@ public class Rocket : MonoBehaviour
 	{
 		if (Input.GetKey(KeyCode.Space))
 		{
-            Debug.Log("Pressing space");
+            //Debug.Log("Pressing space");
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
 			if (!audioSource.isPlaying)
 			{
