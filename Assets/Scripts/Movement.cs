@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -28,35 +27,8 @@ public class Rocket : MonoBehaviour
     {
         ProcessThrust();
         ProcessRotate();
-		CheatCode();
+		
     }
-
-	private void CheatCode()
-	{
-		if (Input.GetKey(KeyCode.L))
-		{
-			MoveToNextLevel();
-		}
-		if (Input.GetKey(KeyCode.C))
-		{
-			CancelCollision();
-		}
-	}
-
-	private void MoveToNextLevel()
-	{
-		int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
-		if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
-		{
-			nextSceneIndex = 0;
-		}
-		SceneManager.LoadScene(nextSceneIndex);
-	}
-
-	private void CancelCollision()
-	{
-		GetComponent<CollisionHandler>().enabled = false;
-	}
 
 	void ProcessRotate()
 	{
