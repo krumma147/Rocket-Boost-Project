@@ -9,6 +9,9 @@ public class Rocket : MonoBehaviour
     AudioSource audioSource;
     [SerializeField] float mainThrust = 100f;
     [SerializeField] float rotateSpeed = 30f;
+    [SerializeField] AudioClip EngineAudio;
+    //[SerializeField] AudioClip EngineAudio;
+    //[SerializeField] AudioClip EngineAudio;
     // Start is called before the first frame update
     void Start()
     {
@@ -48,9 +51,9 @@ public class Rocket : MonoBehaviour
 		{
             //Debug.Log("Pressing space");
             rb.AddRelativeForce(Vector3.up * mainThrust * Time.deltaTime);
-			if (!audioSource.isPlaying)
+			if (!audioSource.isPlaying && gameObject.GetComponent<Rocket>().isActiveAndEnabled)
 			{
-                audioSource.Play();
+                audioSource.PlayOneShot(EngineAudio);
 			}
 		}else
         {

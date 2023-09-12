@@ -6,25 +6,59 @@ using UnityEngine.SceneManagement;
 
 public class CollisionHandler : MonoBehaviour
 {
+	[SerializeField] float loadMapTime = 1f;
+	[SerializeField] AudioClip succeess;
+	[SerializeField] AudioClip crash;
+
+	AudioSource audioSource;
+
+	bool isTransitioning = false;
+	private void Start()
+	{
+		audioSource = GetComponent<AudioSource>();
+	}
 	private void OnCollisionEnter(Collision collision)
 	{
+		if (isTransitioning) { return; }
+
 		switch (collision.gameObject.tag)
 		{
 			case "Frienly":
 				Debug.Log("Collide with friendly tag obj");
 				break;
 			case "Finish":
-				//Debug.Log("");
-				LoadNextLevel();
+				MoveLevelSequence();
 				break;
 			case "Fuel":
 				Debug.Log("You accquire some fuel");
 				break;
 			case "Untagged":
 				Debug.Log("You blew up!");
-				ReloadLevel();
+				CrashSequence();
 				break;
 		}
+	}
+
+	private void MoveLevelSequence()
+	{
+		//todo Add sound effect 
+		//todo Add particle effect
+		isTransitioning = true;
+		GetComponent<Rocket>().enabled = false;
+		audioSource.Stop();
+		audioSource.PlayOneShot(succeess);
+		Invoke(nameof(LoadNextLevel), loadMapTime);
+	}
+
+	private void CrashSequence()
+	{
+		//todo Add sound effect when crash
+		//todo Add particle effect when crash
+		isTransitioning = true;
+		GetComponent<Rocket>().enabled = false;
+		audioSource.Stop();
+		audioSource.PlayOneShot(crash);
+		Invoke("ReloadLevel", loadMapTime);
 	}
 
 	private void ReloadLevel()
