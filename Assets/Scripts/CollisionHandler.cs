@@ -10,16 +10,42 @@ public class CollisionHandler : MonoBehaviour
 	[SerializeField] AudioClip succeess;
 	[SerializeField] AudioClip crash;
 
+	[SerializeField] ParticleSystem succeessParticle;
+	[SerializeField] ParticleSystem crashParticle;
+
+
 	AudioSource audioSource;
 
 	bool isTransitioning = false;
+	bool allowCollision = true;
 	private void Start()
 	{
 		audioSource = GetComponent<AudioSource>();
 	}
+
+	private void Update()
+	{
+		CheatCode();
+	}
+	private void CheatCode()
+	{
+		if (Input.GetKey(KeyCode.L))
+		{
+			LoadNextLevel();
+		}
+		if (Input.GetKey(KeyCode.C))
+		{
+			allowCollision = !allowCollision;
+		}
+	}
+
+	private void CancelCollision()
+	{
+		GetComponent<CollisionHandler>().enabled = false;
+	}
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (isTransitioning) { return; }
+		if (isTransitioning || allowCollision) { return; }
 
 		switch (collision.gameObject.tag)
 		{
@@ -46,6 +72,7 @@ public class CollisionHandler : MonoBehaviour
 		isTransitioning = true;
 		GetComponent<Rocket>().enabled = false;
 		audioSource.Stop();
+		succeessParticle.Play();
 		audioSource.PlayOneShot(succeess);
 		Invoke(nameof(LoadNextLevel), loadMapTime);
 	}
@@ -57,6 +84,7 @@ public class CollisionHandler : MonoBehaviour
 		isTransitioning = true;
 		GetComponent<Rocket>().enabled = false;
 		audioSource.Stop();
+		crashParticle.Play();
 		audioSource.PlayOneShot(crash);
 		Invoke("ReloadLevel", loadMapTime);
 	}
