@@ -27,3 +27,5 @@ public class NewBehaviourScript : MonoBehaviour
         transform.position = startingPoint + offset; //Make the object travel to the point with given offset
     }
 }
+
+//Do level design in video 60
